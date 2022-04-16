@@ -1,5 +1,6 @@
 using JsonApiDotNetCore.Configuration;
 using MongoDB.Driver;
+using WebApiStarter;
 using WebApiStarter.Models;
 using WebApiStarter.Services;
 
@@ -29,6 +30,9 @@ builder.Services.AddSingleton<IMongoDatabase>(options => {
 });
 
 var app = builder.Build();
+
+
+app.UseMiddleware<ResponseMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
