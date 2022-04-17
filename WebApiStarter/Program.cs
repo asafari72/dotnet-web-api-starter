@@ -1,6 +1,5 @@
-using JsonApiDotNetCore.Configuration;
 using MongoDB.Driver;
-using WebApiStarter;
+using WebApiStarter.Middlewares;
 using WebApiStarter.Models;
 using WebApiStarter.Services;
 
@@ -21,9 +20,10 @@ builder.Services.AddSingleton<BooksService>();
 
 
 // MiddleWares
-builder.Services.AddJsonApi();
 
-builder.Services.AddSingleton<IMongoDatabase>(options => {
+
+builder.Services.AddSingleton<IMongoDatabase>(options =>
+{
     var settings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>();
     var client = new MongoClient(settings.ConnectionString);
     return client.GetDatabase(settings.DatabaseName);
@@ -31,8 +31,6 @@ builder.Services.AddSingleton<IMongoDatabase>(options => {
 
 var app = builder.Build();
 
-
-app.UseMiddleware<ResponseMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,5 +44,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCustomResponse();
 
 app.Run();
