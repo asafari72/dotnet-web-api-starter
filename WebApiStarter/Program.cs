@@ -1,5 +1,4 @@
 using MongoDB.Driver;
-using WebApiStarter.Middlewares;
 using WebApiStarter.Models;
 using WebApiStarter.Services;
 
@@ -17,11 +16,9 @@ builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDBSettings"));
 
 builder.Services.AddSingleton<BooksService>();
-
+builder.Services.AddSingleton<UsersService>();
 
 // MiddleWares
-
-
 builder.Services.AddSingleton<IMongoDatabase>(options =>
 {
     var settings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>();
@@ -31,7 +28,6 @@ builder.Services.AddSingleton<IMongoDatabase>(options =>
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,11 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.UseCustomResponse();
-
 app.Run();
