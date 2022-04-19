@@ -16,15 +16,12 @@ namespace WebApiStarter.Util
             {
                 case PasswordVerificationResult.Failed:
                     return "Password incorrect.";
-                    break;
 
                 case PasswordVerificationResult.Success:
                     return "Password ok.";
-                    break;
 
                 case PasswordVerificationResult.SuccessRehashNeeded:
                     return "Password ok but should be rehashed and updated.";
-                    break;
 
                 default:
                     throw new ArgumentOutOfRangeException();
